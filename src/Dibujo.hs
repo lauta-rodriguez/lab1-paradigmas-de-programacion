@@ -57,17 +57,29 @@ data Dibujo a
 figura :: a -> Dibujo a
 figura a = Figura a
 
-rotar = undefined
+rotar :: (v -> v -> v -> a) -> v -> v -> v -> a
+rotar fun x w h = fun (x + w) h (-w)
 
-espejar = undefined
+espejar :: (v -> v -> v -> a) -> (v, v, v) -> a
+espejar fun x w h = fun (x + w) (-w) h
 
-rot45 = undefined
+rot45 :: (v -> v -> v -> a) -> (v, v, v) -> a
+rot45 fun x w h = fun (x + (w + h)/2) (w + h)/2 (h - w)/2
 
-apilar = undefined
+apilar :: Float -> Float -> (v -> v -> v -> a) -> (v -> v -> v -> a) -> (v, v, v) -> [a]
+apilar n m f g x w h = (f (x + h_aux) w (r*h)) : (g x w h_aux) : []
+  where r_aux = n / (m + n)
+        r = m / (m + n)
+        h_aux = r_aux * h 
 
-juntar = undefined
+juntar :: Float -> Float -> (v -> v -> v -> a) -> (v -> v -> v -> a) -> (v, v, v) -> [a]
+juntar n m f g x w h = (f x w_aux h) : (g (x + w_aux) (r_aux * w) h) : []
+  where r_aux = n / (m + n)
+        r = m / (m + n)
+        w_aux = r * w
 
-encimar = undefined
+encimar :: (v -> v -> v -> a) -> (v -> v -> v -> a) -> (v, v, v) -> [a]
+encimar f g x w h = (f x w h) : (g x w h) : []
 
 -- Composición n-veces de una función con sí misma. Componer 0 veces
 -- es la función constante, componer 1 vez es aplicar la función 1 vez, etc.
@@ -122,7 +134,14 @@ foldDib ::
   (b -> b -> b) ->
   Dibujo a ->
   b
-foldDib = undefined
+foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dibujo = case dibujo of
+  Figura a -> fFigura a
+  Rotar dib -> fRotar (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib)
+  Espejar dib -> fEspejar (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib)
+  Rot45 dib -> fRot45 (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib)
+  Apilar f1 f2 dib1 dib2 -> fApilar f1 f2 (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib1) (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib2)
+  Juntar f1 f2 dib1 dib2 -> fJuntar f1 f2 (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib1) (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib2)
+  Encimar dib1 dib2 -> fEncimar (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib1) (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib2)
 
 -- Demostrar que `mapDib figura = id`
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
