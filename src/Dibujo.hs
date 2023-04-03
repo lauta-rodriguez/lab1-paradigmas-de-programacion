@@ -76,10 +76,10 @@ comp f n a
 
 -- Rotaciones de múltiplos de 90.
 r180 :: Dibujo a -> Dibujo a
-r180 = Rotar . Rotar
+r180 = comp rotar 2
 
 r270 :: Dibujo a -> Dibujo a
-r270 = Rotar . r180
+r270 = comp rotar 3
 
 -- Pone una figura sobre la otra, ambas ocupan el mismo espacio.
 (.-.) :: Dibujo a -> Dibujo a -> Dibujo a
@@ -99,12 +99,12 @@ cuarteto d1 d2 d3 d4 = (d1 /// d2) .-. (d3 /// d4)
 
 -- Una figura repetida con las cuatro rotaciones, superpuestas.
 encimar4 :: Dibujo a -> Dibujo a
-encimar4 d = (d ^^^ (Rotar d)) ^^^ ((r180 d) ^^^ (r270 d))
+encimar4 d = d ^^^ (rotar d) ^^^ (r180 d) ^^^ (r270 d)
 
 -- Cuadrado con la misma figura rotada i * 90, para i ∈ {0, ..., 3}.
 -- No confundir con encimar4!
 ciclar :: Dibujo a -> Dibujo a
-ciclar d = cuarteto d (Rotar d) (r180 d) (r270 d)
+ciclar d = cuarteto d (rotar d) (r180 d) (r270 d)
 
 -- Estructura general para la semántica (a no asustarse). Ayuda:
 -- pensar en foldr y las definiciones de Floatro a la lógica
