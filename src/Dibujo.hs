@@ -23,10 +23,6 @@ module Dibujo
   )
 where
 
-import FloatingPic (Output, FloatingPic, half)
-import Graphics.Gloss (pictures)
-import qualified Graphics.Gloss.Data.Point.Arithmetic as V
-
 {-
 Gramática de las figuras:
 <Fig> ::= Figura <Bas> | Rotar <Fig> | Espejar <Fig> | Rot45 <Fig>
@@ -46,44 +42,28 @@ data Dibujo a
   deriving (Eq, Show)
 
 -- Agreguen los tipos y definan estas funciones
--- type Punto = (Float, Float)
--- type Basica = Punto -> Punto -> Punto
 
--- type Figura =  Rectangulo | Triangulo
-
--- triangulo :: Basica -> Picture
--- triangulo a b c = polygon [a, b, c]
-
--- rectangulo :: Basica -> Picture
--- rectangulo a b c = polygon [a, b, a + c, b + c]
-
--- Construcción de dibujo. Abstraen los constructores.
+-- Construcción de dibujo. Abstraen los constructores
 figura :: a -> Dibujo a
 figura = Figura
 
-rotar :: Output FloatingPic
-rotar fun x w h = fun (x V.+ w) h (V.negate w)
+rotar :: Dibujo a -> Dibujo a
+rotar = Rotar
 
-espejar :: Output FloatingPic
-espejar fun x w h = fun (x V.+ w) (V.negate w) h
+espejar :: Dibujo a -> Dibujo a
+espejar = Espejar
 
-rot45 :: Output FloatingPic
-rot45 fun x w h = fun (x V.+ half (w V.+ h)) (half (w V.+ h)) (half (h V.- w))
+rot45 :: Dibujo a -> Dibujo a
+rot45 = Rot45
 
-apilar :: Float -> Float -> FloatingPic -> Output FloatingPic
-apilar n m f g x w h = pictures [f (x V.+ h_aux) w (r V.* h), g x w h_aux]
-  where r_aux = n / (m + n)
-        r = m / (m + n)
-        h_aux = r_aux V.* h
+apilar :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
+apilar = Apilar
 
-juntar :: Float -> Float -> FloatingPic -> Output FloatingPic
-juntar n m f g x w h = pictures [f x w_aux h, g (x V.+ w_aux) (r_aux V.* w) h]
-  where r_aux = n / (m + n)
-        r = m / (m + n)
-        w_aux = r V.* w
+juntar :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
+juntar = Juntar
 
-encimar :: FloatingPic -> Output FloatingPic
-encimar f g x w h = pictures [f x w h, g x w h]
+encimar :: Dibujo a -> Dibujo a -> Dibujo a
+encimar = Encimar
 
 -- Composición n-veces de una función con sí misma. Componer 0 veces
 -- es la función constante, componer 1 vez es aplicar la función 1 vez, etc.
