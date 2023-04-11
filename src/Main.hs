@@ -7,10 +7,11 @@ import Text.Read (readMaybe)
 
 import Interp (Conf(name), initial)
 import Dibujos.Ejemplo (ejemploConf)
+import Dibujos.Feo (feoConf) -- correr como "./main Feo"
 
 -- Lista de configuraciones de los dibujos
 configs :: [Conf]
-configs = [ejemploConf]
+configs = [ejemploConf, feoConf]
 
 -- Dibuja el dibujo n
 initial' :: [Conf] -> String -> IO ()
