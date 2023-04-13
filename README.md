@@ -33,3 +33,8 @@ rm Main *.o *.hi Dibujos/*.hi Dibujos/*.o
 - ¿Por qué las figuras básicas no están incluidas en la definición del lenguaje, y en vez es un parámetro del tipo?
 
 - ¿Qué ventaja tiene utilizar una función de `fold` sobre hacer pattern-matching directo?
+
+# Triángulo de Sierpinski
+- Buscando en internet ejemplos de fractales, encontramos que el triángulo de Sierpinski es un fractal que se puede generar con un triángulo y 3 puntos interiores. Para generarlo se debe repetir el proceso con los 3 puntos interiores del triángulo anterior.
+
+> Tal y como estaba construido el lenguaje, no se podía generar un triángulo de Sierpinski, ya que no se podía generar un triángulo con cada sub-triangulo del mismo tamaño (había deformaciones en el superior), por lo que se tuvo que implementar el operador `escalar` para modificar el tamaño de la figura sin alterar su espacio asignado ni posición (refiriéndonos a la esquina inferior izquierda).
