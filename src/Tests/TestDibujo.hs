@@ -10,6 +10,7 @@ import Dibujo
     figura,
     foldDib,
     juntar,
+    escalar,
     r180,
     r270,
     rot45,
@@ -71,3 +72,6 @@ testencimar4 =
       "encimar4"
       (encimar4 (figura 1))
       (encimar (encimar (encimar (figura 1) (rotar (figura 1))) (rotar (rotar (figura 1)))) (rotar (rotar (rotar (figura 1)))))
+
+testescalar :: Test
+testescalar = TestCase $ assertEqual "escalar" (escalar 2.0 2.0 (figura 1)) (escalar 2.0 2.0 (figura 1))
