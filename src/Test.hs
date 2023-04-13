@@ -15,6 +15,7 @@ main = do
             TestLabel "testapilar" testapilar,
             TestLabel "testjuntar" testjuntar,
             TestLabel "testencimar" testencimar,
+            TestLabel "testescalar" testescalar,
             TestLabel "testR180" testR180,
             TestLabel "testR270" testR270,
             TestLabel "testapilarOp" testapilarOp,
