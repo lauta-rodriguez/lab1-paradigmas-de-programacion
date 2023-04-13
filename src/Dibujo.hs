@@ -9,6 +9,7 @@ module Dibujo
     apilar,
     juntar,
     encimar,
+    escalar,
     r180,
     r270,
     (.-.),
@@ -39,6 +40,7 @@ data Dibujo a
   | Apilar Float Float (Dibujo a) (Dibujo a)
   | Juntar Float Float (Dibujo a) (Dibujo a)
   | Encimar (Dibujo a) (Dibujo a)
+  | Escalar Float Float (Dibujo a)
   deriving (Eq, Show)
 
 -- Agreguen los tipos y definan estas funciones
@@ -64,6 +66,9 @@ juntar = Juntar
 
 encimar :: Dibujo a -> Dibujo a -> Dibujo a
 encimar = Encimar
+
+escalar :: Float -> Float -> Dibujo a -> Dibujo a
+escalar = Escalar
 
 -- Composición n-veces de una función con sí misma. Componer 0 veces
 -- es la función constante, componer 1 vez es aplicar la función 1 vez, etc.
@@ -116,21 +121,25 @@ foldDib ::
   (Float -> Float -> b -> b -> b) ->
   (Float -> Float -> b -> b -> b) ->
   (b -> b -> b) ->
+  (Float -> Float -> b -> b) ->
   Dibujo a ->
   b
-foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dibujo = case dibujo of
+foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar fEscalar dibujo = case dibujo of
   Figura a -> fFigura a
-  Rotar dib -> fRotar (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib)
-  Espejar dib -> fEspejar (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib)
-  Rot45 dib -> fRot45 (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib)
-  Apilar f1 f2 dib1 dib2 -> fApilar f1 f2 (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib1) (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib2)
-  Juntar f1 f2 dib1 dib2 -> fJuntar f1 f2 (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib1) (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib2)
-  Encimar dib1 dib2 -> fEncimar (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib1) (foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar dib2)
+  Rotar dib -> fRotar (fun dib)
+  Espejar dib -> fEspejar (fun dib)
+  Rot45 dib -> fRot45 (fun dib)
+  Apilar f1 f2 dib1 dib2 -> fApilar f1 f2 (fun dib1) (fun dib2)
+  Juntar f1 f2 dib1 dib2 -> fJuntar f1 f2 (fun dib1) (fun dib2)
+  Encimar dib1 dib2 -> fEncimar (fun dib1) (fun dib2)
+  Escalar f1 f2 dib -> fEscalar f1 f2 (fun dib)
+  where 
+    fun = foldDib fFigura fRotar fEspejar fRot45 fApilar fJuntar fEncimar fEscalar
 
 -- Demostrar que `mapDib figura = id`
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
-mapDib f fig = foldDib f Rotar Espejar Rot45 Apilar Juntar Encimar fig
+mapDib f fig = foldDib f rotar espejar rot45 apilar juntar encimar escalar fig
 
 -- Junta todas las figuras básicas de un dibujo.
 figuras :: Dibujo a -> [a]
-figuras = foldDib (: []) id id id (\_ _ -> (++)) (\_ _ -> (++)) (++)
+figuras = foldDib (: []) id id id (\_ _ -> (++)) (\_ _ -> (++)) (++) (\_ _ -> id)

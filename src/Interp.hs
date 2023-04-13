@@ -9,12 +9,13 @@ where
 import Dibujo (Dibujo, apilar, encimar, espejar, foldDib, juntar, rot45, rotar)
 import FloatingPic (FloatingPic, Output, grid, half)
 import Graphics.Gloss (Display (InWindow), Picture, color, display, makeColorI, pictures, translate, white)
-import Graphics.Gloss.Data.Point.Arithmetic qualified as V
+import qualified Graphics.Gloss.Data.Point.Arithmetic as V
+import Graphics.Gloss.Data.Vector (mulSV)
 
 -- Interpretación de un dibujo
 -- formulas sacadas del enunciado
 interp :: Output a -> Output (Dibujo a)
-interp fun = foldDib (\a -> fun a) interpRotar interpEspejar interpRot45 interpApilar interpJuntar interpEncimar
+interp fun = foldDib (\a -> fun a) interpRotar interpEspejar interpRot45 interpApilar interpJuntar interpEncimar interpEscalar
 
 -- funcion que interpreta rotar
 -- rotar :: OutputBas
@@ -53,6 +54,12 @@ interpJuntar n m f g x w h = pictures [f x w_aux h, g (x V.+ w_aux) (r_aux V.* w
 -- encimar :: FloatingBas -> OutputBas
 interpEncimar :: FloatingPic -> Output FloatingPic
 interpEncimar f g x w h = pictures [f x w h, g x w h]
+
+-- funcion que interpreta escalar
+-- escalar :: Float -> FloatingBas -> OutputBas
+interpEscalar :: Float -> Float -> Output FloatingPic
+interpEscalar n m fun x w h = fun x' (n V.* w) (m V.* h)
+  where x' = x V.+ (((n - 1) / 2) `mulSV` (V.negate w))
 
 -- Configuración de la interpretación
 data Conf = Conf
