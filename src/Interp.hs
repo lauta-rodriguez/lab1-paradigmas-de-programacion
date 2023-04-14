@@ -8,7 +8,7 @@ where
 
 import Dibujo (Dibujo, apilar, encimar, espejar, foldDib, juntar, rot45, rotar)
 import FloatingPic (FloatingPic, Output, grid, half)
-import Graphics.Gloss (Display (InWindow), Picture, color, display, makeColorI, pictures, translate, white)
+import Graphics.Gloss (Display (InWindow), Picture, color, animate, makeColorI, pictures, translate, white)
 import qualified Graphics.Gloss.Data.Point.Arithmetic as V
 import Graphics.Gloss.Data.Vector (mulSV)
 
@@ -64,11 +64,11 @@ interpEscalar n m fun x w h = fun x' (n V.* w) (m V.* h)
 -- Configuración de la interpretación
 data Conf = Conf
   { name :: String,
-    pic :: FloatingPic
+    pic :: Float -> FloatingPic
   }
 
-interpConf :: Conf -> Float -> Float -> Picture
-interpConf (Conf _ p) x y = p (0, 0) (x, 0) (0, y)
+interpConf :: Conf -> Float -> Float -> Float -> Picture
+interpConf (Conf _ p) x y n = p n (0, 0) (x, 0) (0, y)
 
 -- Dada una computación que construye una configuración, mostramos por
 -- pantalla la figura de la misma de acuerdo a la interpretación para
@@ -78,7 +78,7 @@ initial :: Conf -> Float -> IO ()
 initial cfg size = do
   let n = name cfg
       win = InWindow n (ceiling size, ceiling size) (0, 0)
-  display win white $ withGrid (interpConf cfg size size) size size
+  animate win white $ withGrid (interpConf cfg size size) size size
   where
-    withGrid p x y = translate (-size / 2) (-size / 2) $ pictures [p, color grey $ grid (ceiling $ size / 10) (0, 0) x 10]
+    withGrid p x y n = translate (-size / 2) (-size / 2) $ pictures [p n, color grey $ grid (ceiling $ size / 10) (0, 0) x 10]
     grey = makeColorI 120 120 120 120

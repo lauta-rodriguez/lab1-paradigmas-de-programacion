@@ -35,5 +35,5 @@ interpBas fig x w h = case fig of
 fractalConf :: Conf
 fractalConf = Conf {
     name = "Fractal",
-    pic = interp interpBas draw
+    pic = \_ -> interp interpBas draw
 }

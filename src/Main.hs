@@ -10,6 +10,7 @@ import Dibujos.Ejemplo (ejemploConf)
 import Dibujos.Feo (feoConf) -- correr como "./main Feo"
 import Dibujos.Grilla (grillaConf)
 import Dibujos.Fractal (fractalConf)
+import Dibujos.AnimateRandom (animateRandomConf)
 
 -- Lista de configuraciones de los dibujos
 configs :: [Conf]
@@ -17,6 +18,7 @@ configs = [
     ejemploConf, 
     feoConf, 
     grillaConf, 
+    animateRandomConf, 
     fractalConf]
 
 -- Dibuja el dibujo n
