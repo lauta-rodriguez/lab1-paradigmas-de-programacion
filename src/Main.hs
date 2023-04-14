@@ -11,6 +11,7 @@ import Dibujos.Feo (feoConf) -- correr como "./main Feo"
 import Dibujos.Grilla (grillaConf)
 import Dibujos.Fractal (fractalConf)
 import Dibujos.AnimateRandom (animateRandomConf)
+import Dibujos.Escher (escherConf)
 
 -- Lista de configuraciones de los dibujos
 configs :: [Conf]
@@ -19,7 +20,8 @@ configs = [
     feoConf, 
     grillaConf, 
     animateRandomConf, 
-    fractalConf]
+    fractalConf,
+    escherConf]
 
 -- Dibuja el dibujo n
 initial' :: [Conf] -> String -> IO ()
