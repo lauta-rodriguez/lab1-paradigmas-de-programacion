@@ -16,7 +16,7 @@ import Dibujo
   )
 import FloatingPic (Output, half, vacia, zero)
 import Graphics.Gloss (blank, line, pictures, polygon, scale, text, translate, white)
-import Graphics.Gloss.Data.Point.Arithmetic qualified as V
+import qualified Graphics.Gloss.Data.Point.Arithmetic as V
 import Interp (Conf (..), interp)
 
 type Escher = Bool
@@ -76,5 +76,5 @@ escherConf :: Conf
 escherConf =
   Conf
     { name = "Escher",
-      pic = interp interpBas (escher 5 True)
+      pic = \_ -> interp interpBas (escher 5 True)
     }
