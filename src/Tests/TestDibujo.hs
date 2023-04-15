@@ -111,14 +111,14 @@ testCuarteto =
     "cuarteto"
       (show $ 
         cuarteto (figura 1) (figura 2) (figura 3) (figura 4))
-      "Apilar 1.0 1.0 (Figura 1 /// Figura 2) (Figura 3 /// Figura 4)"
+      "Apilar 1.0 1.0 (Juntar 1.0 1.0 (Figura 1) (Figura 2)) (Juntar 1.0 1.0 (Figura 3) (Figura 4))"
 
 testencimar4 :: Test
 testencimar4 =
   TestCase $ assertEqual
     "encimar4"
-      (show $ encimar4 (figura 1))
-      "Encimar (Encimar (Encimar (Figura 1) (Rotar Figura 1)) (Rotar (Rotar Figura 1))) (Rotar (Rotar (Rotar Figura 1)))"
+      (show $ encimar4 (figura 1))                                                                          
+      "Encimar (Encimar (Encimar (Figura 1) (Rotar (Figura 1))) (Rotar (Rotar (Figura 1)))) (Rotar (Rotar (Rotar (Figura 1))))"
 
 testescalar :: Test
 testescalar =
