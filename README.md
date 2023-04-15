@@ -84,6 +84,6 @@ Se agregó un nuevo parámetro de tipo `Float` que indica el momento de la anima
 
 ### Se deja un ejemplo de animación (poco elaborado) que se puede ejecutar con el comando:
 
-```bash shell
+```shell
 ghc -package GLUT -package gloss Main.hs && ./Main AnimateRandom
 ```
