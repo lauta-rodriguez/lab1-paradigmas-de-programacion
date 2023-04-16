@@ -1,8 +1,8 @@
 module Main where
 
 import Test.HUnit
-import Tests.TestDibujo (testCuarteto, testR180, testR270, testapilar, testapilarOp, testencimar, testencimar4, testencimarOp, testescalar, testespejar, testfigura, testjuntar, testjuntarOp, testrot45, testrotar)
-import Tests.TestPred (testalldib, testandp, testanydib, testcambiar, testorp)
+import Tests.TestDibujo
+import Tests.TestPred
 
 main :: IO ()
 main = do
@@ -23,8 +23,12 @@ main = do
             TestLabel "testCuarteto" testCuarteto,
             TestLabel "testencimar4" testencimar4,
             TestLabel "testescalar" testescalar,
-            TestLabel "testalldib" testalldib,
-            TestLabel "testanydib" testanydib,
+            TestLabel "testfoldDib" testfoldDib,
+            TestLabel "testmapDib" testmapDib,
+            TestLabel "testalldibTrue" testalldibTrue,
+            TestLabel "testalldibFalse" testalldibFalse,
+            TestLabel "testanydibTrue" testanydibTrue,
+            TestLabel "testanydibFalse" testanydibFalse,
             TestLabel "testcambiar" testcambiar,
             TestLabel "testandp" testandp,
             TestLabel "testorp" testorp
