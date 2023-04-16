@@ -15,7 +15,15 @@ import Graphics.Gloss.Data.Vector (mulSV)
 -- Interpretación de un dibujo
 -- formulas sacadas del enunciado
 interp :: Output a -> Output (Dibujo a)
-interp fun = foldDib (\a -> fun a) interpRotar interpEspejar interpRot45 interpApilar interpJuntar interpEncimar interpEscalar
+interp fun = foldDib
+  fun
+  interpRotar
+  interpEspejar
+  interpRot45
+  interpApilar
+  interpJuntar
+  interpEncimar
+  interpEscalar
 
 -- funcion que interpreta rotar
 -- rotar :: OutputBas
@@ -25,7 +33,7 @@ interpRotar fun x w h = fun (x V.+ w) h (V.negate w)
 -- funcion que interpreta espejar
 -- espejar :: OutputBas
 interpEspejar :: Output FloatingPic
-interpEspejar fun x w h = fun (x V.+ w) (V.negate w) h
+interpEspejar fun x w = fun (x V.+ w) (V.negate w)
 
 -- funcion que interpreta rot45
 -- rot45 :: OutputBas
@@ -59,7 +67,7 @@ interpEncimar f g x w h = pictures [f x w h, g x w h]
 -- escalar :: Float -> FloatingBas -> OutputBas
 interpEscalar :: Float -> Float -> Output FloatingPic
 interpEscalar n m fun x w h = fun x' (n V.* w) (m V.* h)
-  where x' = x V.+ (((n - 1) / 2) `mulSV` (V.negate w))
+  where x' = x V.+ (((n - 1) / 2) `mulSV` V.negate w)
 
 -- Configuración de la interpretación
 data Conf = Conf
