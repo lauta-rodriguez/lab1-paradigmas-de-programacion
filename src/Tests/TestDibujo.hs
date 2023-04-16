@@ -15,6 +15,7 @@ import Dibujo
     r270,
     rot45,
     rotar,
+    mapDib,
     (.-.),
     (///),
     (^^^),
@@ -147,5 +148,19 @@ testfoldDib =
         (encimar 
           (juntar 1.0 1.0 (figura Triangulo) (figura Rectangulo)) 
           (rotar (figura Rectangulo))
+        )
+      )
+
+-- transforma un Dibujo de enteros en un dibujo de strings
+testmapDib :: Test
+testmapDib =
+  TestCase $ assertEqual
+    "mapDib"
+      "Encimar (Juntar 1.0 1.0 (Figura \"1\") (Figura \"2\")) (Rotar (Figura \"3\"))"
+      (show $ mapDib
+        (figura . show)
+        (encimar
+          (juntar 1.0 1.0 (figura 1) (figura 2))
+          (rotar (figura 3))
         )
       )
