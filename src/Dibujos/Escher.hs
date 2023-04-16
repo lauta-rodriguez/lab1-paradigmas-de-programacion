@@ -65,9 +65,8 @@ escher n f = noneto p q r s t u v w x
 
 -- Funcion que interpreta la figura
 interpBas :: Output Escher
-interpBas fig a b c = case fig of
-  True -> pictures [line $ triangulo a b c, cara a b c]
-  False -> vacia a b c
+interpBas fig a b c =
+  if fig then pictures [line $ triangulo a b c, cara a b c] else vacia a b c
   where
     triangulo a b c = map (a V.+) [zero, c, b, zero]
     cara a b c = polygon $ triangulo (a V.+ half c) (half b) (half c)
