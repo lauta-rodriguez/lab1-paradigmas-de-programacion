@@ -21,6 +21,8 @@ import Dibujo
   )
 import Test.HUnit (Test (..), assertEqual)
 
+data TriORect = Triangulo | Rectangulo deriving (Eq, Show)
+
 testfigura :: Test
 testfigura = 
   TestCase $ assertEqual 
@@ -126,3 +128,24 @@ testescalar =
     "escalar"
       (show $ escalar 2.0 2.0 (figura 1))
       "Escalar 2.0 2.0 (Figura 1)"
+
+-- cuenta la cantidad de figuras que hay en un dibujo
+testfoldDib :: Test
+testfoldDib =
+  TestCase $ assertEqual
+    "foldDib"
+    3
+      (foldDib
+        (const 1)
+        id
+        id
+        id
+        (\_ _ x y -> x + y)
+        (\_ _ x y -> x + y)
+        (+)
+        (\_ _ x -> x)
+        (encimar 
+          (juntar 1.0 1.0 (figura Triangulo) (figura Rectangulo)) 
+          (rotar (figura Rectangulo))
+        )
+      )
