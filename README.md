@@ -64,7 +64,7 @@ rm Test *.o *.hi Tests/*.hi Tests/*.o
 
 - ¿Qué ventaja tiene utilizar una función de `fold` sobre hacer pattern-matching directo?
 
-> La ventaja de utilizar la función fold en lugar de hacer pattern-matching directo es que fold permite definir una operación de acumulación genérica y aplicarla a cada elemento de la lista, lo cual resulta en un código más genérico y modular.
+> La ventaja de utilizar la función fold en lugar de hacer pattern-matching directo es que fold permite definir operaciones genéricas para aplicar a cada elemento del dibujo, por ejemplo en la función `interp` la llamamos con funciones de interpretación. Esto resulta en un código más genérico y modular.
 
 # Triángulo de Sierpinski
 
