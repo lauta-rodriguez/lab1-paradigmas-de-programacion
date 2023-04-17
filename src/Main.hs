@@ -33,7 +33,17 @@ initial' (c : cs) n =
     else
         initial' cs n
 
+lista :: [Conf] -> [String]
+lista [] = []
+lista (c : cs) = name c : lista cs
+
 main :: IO ()
 main = do
     args <- getArgs
-    initial' configs $ head args
+    if head args == "--lista" then do
+        putStrLn $ unlines $ lista configs
+        print("Please enter the ConfigName here")
+        n <- getLine
+        initial' configs n
+    else
+        initial' configs $ head args
