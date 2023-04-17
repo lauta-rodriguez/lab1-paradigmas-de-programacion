@@ -75,5 +75,5 @@ escherConf :: Conf
 escherConf =
   Conf
     { name = "Escher",
-      pic = \_ -> interp interpBas (escher 5 True)
+      pic = interp interpBas (escher 5 True)
     }

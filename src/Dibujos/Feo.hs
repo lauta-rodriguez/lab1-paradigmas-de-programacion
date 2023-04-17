@@ -119,5 +119,5 @@ testAll = grilla [
 feoConf :: Conf
 feoConf = Conf {
     name = "Feo",
-    pic = \_ -> interp interpBas testAll
+    pic = interp interpBas testAll
 }
